@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="col-12" th:fragment="header" >
+        <div class="col-12 row pb-3">
+            <a th:href="@{/}" class="col-8">
+                <h1>Webstore</h1>
+            </a>
+            <a th:href="@{/cart}" class="col-2" th:if="${!isAdmin}" th:text="${'Cart ('+cart.size+')'}"></a>
+            <a th:href="@{/logout}" class="col-2">Logout</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

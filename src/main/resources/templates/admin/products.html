@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <header class="row">
+        <div th:replace="fragments/header :: header"></div>
+    </header>
+
+    <main class="jumbotron">
+        <div class="row">
+            <div th:replace="fragments/filter :: filter"></div>
+        </div>
+
+<!--        New Product-->
+        <div class="row">
+            <div class="col-12 my-3">
+                <div th:replace="fragments/product :: new"></div>
+            </div>
+        </div>
+
+<!--        existing products-->
+        <div class="row">
+            <div class="col-12" th:each="product : ${products}">
+                <a class="card" th:href="@{/product/{id}(id=${product.id})}">
+                    <div th:replace="fragments/product :: compact"></div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

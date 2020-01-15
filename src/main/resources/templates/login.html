@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <main class="jumbotron">
+        <div class="row justify-content-center mb-3">
+            <h1>Login</h1>
+        </div>
+        <form class="col-12" method="post" th:action="@{/login}" th:object="${loginRequest}">
+            <div class="row">
+                <input class="form-control" type="text" placeholder="Username" th:field="*{username}">
+                <input class="form-control" type="password" placeholder="Password" th:field="*{password}">
+            </div>
+            <div class="row">
+                <button class="col-6 btn btn-block btn-primary" type="submit">Login</button>
+                <a th:href="@{/register}" class="col-6 btn btn-block btn-secondary m-0">Register</a>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

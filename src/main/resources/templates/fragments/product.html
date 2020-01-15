@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+
+    <form th:fragment="new" class="col-12" method="post" th:action="@{/product}" th:object="${newProduct}" >
+
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Image</div>
+            </div>
+            <input type="text" class="form-control" th:field="*{image}">
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Title</div>
+            </div>
+            <input type="text" class="form-control" th:field="*{title}">
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Price</div>
+            </div>
+            <input type="text" class="form-control" th:field="*{price}">
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Tags</div>
+            </div>
+            <input type="text" class="form-control" th:field="*{tags}">
+        </div>
+        <button type="submit" class="btn btn-block btn-primary">Create new</button>
+    </form>
+
+
+    <div class="col-12" th:fragment="change" >
+        <form class="col-12" method="post" th:action="@{/product/{id}(id=*{id})}" th:object="${product}" >
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">ID</div>
+                </div>
+                <input type="text" class="form-control" disabled th:field="*{id}">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Image</div>
+                </div>
+                <input type="text" class="form-control" th:field="*{image}">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Title</div>
+                </div>
+                <input type="text" class="form-control" th:field="*{title}">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Price</div>
+                </div>
+                <input type="text" class="form-control" th:field="*{price}">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Tags</div>
+                </div>
+                <input type="text" class="form-control" th:field="*{tags}">
+            </div>
+            <button type="submit" class="btn btn-block btn-primary">Change</button>
+        </form>
+    </div>
+
+<!--    compact-->
+    <div class="row" th:fragment="compact" th:object="${product}">
+        <div class="col-3"><img th:src="*{image}" th:alt="*{title}"></div>
+        <div class="col-1" th:text="*{id}"></div>
+        <div class="col-3" th:text="*{title}"></div>
+        <div class="col-2" th:text="*{price}"></div>
+        <div class="col-3" th:text="*{tags}"></div>
+    </div>
+
+
+    <div class="col-12 row m-0" th:fragment="basic" th:object="${product}">
+        <!--                        image-->
+        <div class="col-4">
+            <a th:href="@{/product/{id}(id=*{id})}">
+                <img th:src="*{image}" th:alt="*{title}" class="img img-fluid">
+            </a>
+        </div>
+        <!--                        name, price, category-->
+        <div class="col-5">
+            <a th:href="@{/product/{id}(id=*{id})}">
+                <h3 th:text="*{title}"></h3>
+            </a>
+            <h4 th:text="*{price}"></h4>
+        </div>
+        <div class="col-3">
+            <h5 th:text="*{tags}"></h5>
+        </div>
+    </div>
+
+    <div class="col-12" th:fragment="large" th:object="${product}">
+        <div class="col-12">
+            <img class="img img-fluid" th:src="*{image}" th:alt="*{title}">
+        </div>
+        <div class="col-12">
+            <!--            name&price-->
+            <h1 th:text="*{title}"></h1>
+            <h2 th:text="*{price}"></h2>
+        </div>
+        <div class="col-12">
+            <p th:text="*{tags}"></p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<div class="container">
+    <header class="row">
+        <div th:replace="fragments/header :: header"></div>
+    </header>
+
+    <main class="jumbotron">
+        <div class="row">
+            <div class="col-10">
+                <div class="row m-0" th:each="entry : ${cart.entries}" th:with="product=${entry.key}">
+                    <div class="col-9">
+                        <div th:replace="fragments/product :: basic"></div>
+                    </div>
+                    <div class="col-3" >
+                        <form class="col-12" method="post" th:action="@{/cart}" th:object="${newEntry}">
+                            <select hidden th:field="*{key}"><option selected th:value="${entry.key.id}"></option></select>
+                            <input class="form-control" type="number" th:field="*{value}" th:placeholder="${entry.value}" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 border-left">
+                <form method="post" th:action="@{/order}">
+                    Cost: <p th:text="${cart.getTotalPrice()}"></p>
+                    <button type="submit" class="btn btn-success">Checkout</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

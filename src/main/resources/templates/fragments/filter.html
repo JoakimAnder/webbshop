@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<body>
+<!--/*@thymesVar id="isAdmin" type="java.lang.Boolean"*/-->
+<div class="container">
+    <div class="col-12" th:fragment="filter" >
+        <form class="col-12" method="post" th:action="@{/home}" th:object="${search}">
+            <select th:if="${isAdmin}" class="form-control" th:field="${search.category}" th:value="${search.category}">
+                <option value="orders">Orders</option>
+                <option value="products">Products</option>
+            </select>
+            <input type="text" class="form-control" placeholder="Tags" th:field="*{tags}"  th:value="${search.tags}">
+            <input type="text" class="form-control" placeholder="Search" th:field="*{query}" th:value="${search.query}" >
+            <button type="submit" class="btn btn-primary btn-block">Search</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

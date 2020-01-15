@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Title</title>
+</head>
+<div class="container">
+    <header class="row">
+        <div th:replace="fragments/header :: header"></div>
+    </header>
+
+    <main class="jumbotron">
+        <div class="row">
+            <div class="col-8">
+                <div th:replace="fragments/product :: large"></div>
+            </div>
+            <div class="col-4">
+                <form
+                        method="post"
+                        th:object="${entry}"
+                        th:action="@{/product/{id}/(id=${product.id})}"
+                >
+                    <!--            amount/add button-->
+                    <input type="number" class="form-control" th:field="*{value}">
+                    <button type="submit" class="btn btn-primary btn-block">Add to cart</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
