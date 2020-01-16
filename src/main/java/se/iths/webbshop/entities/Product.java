@@ -8,10 +8,14 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String image;
+    @Column(nullable = false)
     private double price;
-    @ElementCollection
+    @Column(nullable = false)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> tags;
 
     public Product() {

@@ -1,5 +1,7 @@
 package se.iths.webbshop.entities;
 
+import se.iths.webbshop.controllers.utilities.Cart;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,32 +10,30 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    @Column(unique = true)
-    private String username;
-    private String password;
-    private String address;
+    @Column(unique = true, nullable = false)
+    private String username = "";
+    @Column(nullable = false)
+    private String password = "";
+    @Column(nullable = false)
+    private String address = "";
     private boolean isAdmin;
-    @OneToOne
-    private Cart cart;
 
     public User() {
     }
 
-    public User(int id, String username, String password, String address, Cart cart) {
+    public User(int id, String username, String password, String address) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.address = address;
         this.isAdmin = false;
-        this.cart = cart;
     }
-    public User(int id, String username, String password, String address, boolean isAdmin, Cart cart) {
+    public User(int id, String username, String password, String address, boolean isAdmin) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.address = address;
         this.isAdmin = isAdmin;
-        this.cart = cart;
     }
 
     public int getId() {
@@ -76,11 +76,4 @@ public class User {
         isAdmin = admin;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 }

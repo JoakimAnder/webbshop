@@ -3,13 +3,16 @@ package se.iths.webbshop.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "my_line")
 public class Line {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @OneToOne
     private Product product;
+    @Column(nullable = false)
     private double price;
+    @Column(nullable = false)
     private int amount;
 
     public Line() {

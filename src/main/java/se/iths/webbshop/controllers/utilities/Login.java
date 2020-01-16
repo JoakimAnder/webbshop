@@ -14,7 +14,16 @@ public class Login {
     @Autowired
     private Dao dao;
     private User user;
+    private Cart cart = new Cart();
     private Search search = new Search();
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public Search getSearch() {
         return search;
@@ -34,10 +43,11 @@ public class Login {
 
     public void logout() {
         user = null;
+        cart.clear();
     }
 
     public void attempt(LoginRequest request) {
-        user = dao.login(request.username, request.password);
+        user = dao.login(request.getUsername(), request.getPassword());
     }
 
     public int getID() {

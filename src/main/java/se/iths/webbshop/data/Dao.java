@@ -3,9 +3,9 @@ package se.iths.webbshop.data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
+import se.iths.webbshop.controllers.utilities.Cart;
 import se.iths.webbshop.entities.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,14 +17,7 @@ public class Dao {
     Repository repo;
 
     public User createUser(User user) {
-        if(user.getCart() == null) {
-            user.setCart(createCart(new Cart(0)));
-        }
-
         return repo.user.save(user);
-    }
-    public Cart createCart(Cart cart) {
-        return repo.cart.save(cart);
     }
     public Order createOrder(Order order) {
         order.getLines().forEach(this::createLine);
@@ -58,30 +51,17 @@ public class Dao {
         return repo.product.save(oldProduct);
     }
 
-    public Cart updateCart(int id, Cart cart) {
-        Cart oldCart = repo.cart.findById(id).orElse(null);
-        if(oldCart == null)
-            return cart;
-
-        oldCart.setBasket(cart.getBasket());
-        return repo.cart.save(oldCart);
-    }
-
-    public List<Line> convertToOrderLines(Cart cart) {
-        return cart.getEntries().stream()
-                .map(e -> new Line(0, e.getKey(), e.getKey().getPrice(), e.getValue()))
-                .collect(Collectors.toList());
-    }
-
     public User login(String username, String password) {
-        return repo.user.findUserByUsernameAndPassword(username, password);
+        User user = repo.user.findUserByUsername(username);
+        if(user != null) {
+            if(!user.getPassword().equals(password))
+                user = null;
+        }
+        return user;
     }
 
     public User getUser(int id) {
         return repo.user.findById(id).orElse(null);
-    }
-    public Cart getCart(int id) {
-        return repo.cart.findById(id).orElse(null);
     }
     public Order getOrder(int id) {
         return repo.order.findById(id).orElse(null);
@@ -147,7 +127,4 @@ public class Dao {
         }
         return false;
     }
-
-
-
 }

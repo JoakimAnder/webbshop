@@ -4,7 +4,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import se.iths.webbshop.entities.User;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
-    User findUserByUsernameAndPassword(String username, String password);
+    List<User> findAll();
+    User findUserByUsername(String username);
 }

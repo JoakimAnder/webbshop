@@ -7,8 +7,6 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 public class Repository {
     @Autowired
-    public CartRepository cart;
-    @Autowired
     public OrderRepository order;
     @Autowired
     public LineRepository line;

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import se.iths.webbshop.annotations.Credentials;
 import se.iths.webbshop.controllers.utilities.Login;
 import se.iths.webbshop.controllers.utilities.Search;
-import se.iths.webbshop.controllers.utilities.ViewEntry;
+import se.iths.webbshop.controllers.utilities.Views.ViewEntry;
 import se.iths.webbshop.data.Dao;
-import se.iths.webbshop.entities.Cart;
+import se.iths.webbshop.controllers.utilities.Cart;
 import se.iths.webbshop.entities.Order;
 import se.iths.webbshop.entities.Product;
 import se.iths.webbshop.entities.User;
@@ -31,8 +31,7 @@ public class CustomerController {
     @Credentials
     @GetMapping("/home")
     public String getHome(@PathVariable Integer id, Model model) {
-        System.out.println(1);
-        Cart cart = dao.getUser(id).getCart();
+        Cart cart = login.getCart();
         Search search = login.getSearch();
 
         model.addAttribute("products", dao.getProducts(search.getTags(), search.getQuery()));
@@ -41,7 +40,6 @@ public class CustomerController {
         model.addAttribute("search", search);
         model.addAttribute("cart", cart);
 
-        System.out.println(2);
         return "customer/home";
     }
 
@@ -51,7 +49,7 @@ public class CustomerController {
         model.addAttribute("product", dao.getProduct(productId));
         model.addAttribute("entry", new ViewEntry());
         model.addAttribute("isAdmin", login.isAdmin());
-        model.addAttribute("cart", dao.getUser(id).getCart());
+        model.addAttribute("cart", login.getCart());
 
 
         return "customer/product";
@@ -60,7 +58,7 @@ public class CustomerController {
     @Credentials
     @GetMapping("/order/{orderId}")
     public String getOrder(@PathVariable Integer id, @PathVariable String orderId, Model model) {
-        model.addAttribute("cart", dao.getUser(id).getCart());
+        model.addAttribute("cart", login.getCart());
         model.addAttribute("order", dao.getOrder(Integer.parseInt(orderId)));
         model.addAttribute("isAdmin", login.isAdmin());
 
@@ -71,7 +69,7 @@ public class CustomerController {
     @Credentials
     @GetMapping("/cart")
     public String getCart(@PathVariable Integer id, Model model) {
-        model.addAttribute("cart", dao.getUser(id).getCart());
+        model.addAttribute("cart", login.getCart());
         model.addAttribute("newEntry", new ViewEntry());
         model.addAttribute("isAdmin", login.isAdmin());
 
@@ -82,22 +80,22 @@ public class CustomerController {
     @Credentials
     @PostMapping("/product")
     public String addProduct(@PathVariable Integer id, ViewEntry entry) {
-        Cart cart = dao.getUser(id).getCart();
+        Cart cart = login.getCart();
         Product product = dao.getProduct(entry.getKey());
 
-        cart.put(product, 1+cart.getAmount(product));
-        dao.updateCart(cart.getId(), cart);
+        cart.put(product, 1+cart.findAmount(product));
         return "redirect:/home";
     }
 
     @Credentials
     @PostMapping("/cart")
     public String changeCart(@PathVariable Integer id, ViewEntry newEntry) {
-        Cart cart = dao.getUser(id).getCart();
+        Cart cart = login.getCart();
+        System.out.println(newEntry.getKey());
+        System.out.println(newEntry.getValue());
         Product product = dao.getProduct(newEntry.getKey());
 
         cart.put(product, newEntry.getValue());
-        dao.updateCart(cart.getId(), cart);
         return "redirect:/cart";
     }
 
@@ -105,9 +103,10 @@ public class CustomerController {
     @PostMapping("/order")
     public String createOrder(@PathVariable Integer id) {
         User user = dao.getUser(id);
-        Cart cart = user.getCart();
+        Cart cart = login.getCart();
 
-        Order order = dao.createOrder(new Order(0, user, dao.convertToOrderLines(cart)));
+        Order order = dao.createOrder(new Order(0, user, cart.convertToOrderLines()));
+        cart.clear();
 
         return "redirect:/order/"+order.getId();
     }
@@ -115,11 +114,10 @@ public class CustomerController {
     @Credentials
     @PostMapping("/product/{productId}")
     public String addProduct(@PathVariable Integer id, @PathVariable Integer productId, ViewEntry entry) {
-        Cart cart = dao.getUser(id).getCart();
+        Cart cart = login.getCart();
         Product product = dao.getProduct(productId);
 
         cart.put(product, entry.getValue());
-        dao.updateCart(cart.getId(), cart);
         return "redirect:/product/"+productId;
     }
 

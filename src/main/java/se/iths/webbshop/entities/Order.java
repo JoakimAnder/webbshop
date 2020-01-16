@@ -11,8 +11,10 @@ public class Order {
     private int id;
     @OneToOne
     private User user;
+    @Column(nullable = false)
     private String status;
     @OneToMany(targetEntity = Line.class)
+    @Column(nullable = false)
     private List<Line> lines;
 
     public Order() {

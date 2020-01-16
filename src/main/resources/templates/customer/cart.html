@@ -19,8 +19,9 @@
                         <div th:replace="fragments/product :: basic"></div>
                     </div>
                     <div class="col-3" >
-                        <form class="col-12" method="post" th:action="@{/cart}" th:object="${newEntry}">
+                        <form class="col-12" method="post" th:action="@{/cart}" th:object="${newEntry.getTest(entry.value)}" th:with="fixedEntry=${newEntry.getTest(entry.value)}">
                             <select hidden th:field="*{key}"><option selected th:value="${entry.key.id}"></option></select>
+                            <input type="number" class="form-control" th:value="5">
                             <input class="form-control" type="number" th:field="*{value}" th:placeholder="${entry.value}" />
                         </form>
                     </div>
@@ -28,7 +29,7 @@
             </div>
             <div class="col-2 border-left">
                 <form method="post" th:action="@{/order}">
-                    Cost: <p th:text="${cart.getTotalPrice()}"></p>
+                    Cost: <p th:text="${cart.totalPrice}"></p>
                     <button type="submit" class="btn btn-success">Checkout</button>
                 </form>
             </div>
