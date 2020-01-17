@@ -1,4 +1,4 @@
-package se.iths.webbshop.controllers.utilities;
+package se.iths.webbshop.utilities;
 
 
 import se.iths.webbshop.entities.Line;
@@ -19,7 +19,7 @@ public class Cart {
         return basket;
     }
 
-    public List<Line> convertToOrderLines() {
+    public List<Line> convertToLines() {
         return getEntries().stream()
                 .map(e -> new Line(0, e.getKey(), e.getKey().getPrice(), e.getValue()))
                 .collect(Collectors.toList());

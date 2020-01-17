@@ -1,11 +1,7 @@
-package se.iths.webbshop.controllers.utilities.Views;
+package se.iths.webbshop.views;
 
-import se.iths.webbshop.entities.Line;
 import se.iths.webbshop.entities.Order;
-import se.iths.webbshop.entities.User;
 
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.List;
 import java.util.stream.Collectors;
 

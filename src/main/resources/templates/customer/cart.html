@@ -19,10 +19,9 @@
                         <div th:replace="fragments/product :: basic"></div>
                     </div>
                     <div class="col-3" >
-                        <form class="col-12" method="post" th:action="@{/cart}" th:object="${newEntry.getTest(entry.value)}" th:with="fixedEntry=${newEntry.getTest(entry.value)}">
-                            <select hidden th:field="*{key}"><option selected th:value="${entry.key.id}"></option></select>
-                            <input type="number" class="form-control" th:value="5">
-                            <input class="form-control" type="number" th:field="*{value}" th:placeholder="${entry.value}" />
+                        <form class="col-12" method="post" th:action="@{/cart}" >
+                            <select hidden name="key" ><option selected th:value="${entry.key.id}"></option></select>
+                            <input class="form-control" name="value" type="number" th:value="${entry.value}" />
                         </form>
                     </div>
                 </div>

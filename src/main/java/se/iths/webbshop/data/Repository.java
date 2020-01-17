@@ -7,11 +7,43 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 public class Repository {
     @Autowired
-    public OrderRepository order;
+    private OrderRepository order;
     @Autowired
-    public LineRepository line;
+    private LineRepository line;
     @Autowired
-    public ProductRepository product;
+    private ProductRepository product;
     @Autowired
-    public UserRepository user;
+    private UserRepository user;
+
+    public OrderRepository order() {
+        return order;
+    }
+
+    public void setOrder(OrderRepository order) {
+        this.order = order;
+    }
+
+    public LineRepository line() {
+        return line;
+    }
+
+    public void setLine(LineRepository line) {
+        this.line = line;
+    }
+
+    public ProductRepository product() {
+        return product;
+    }
+
+    public void setProduct(ProductRepository product) {
+        this.product = product;
+    }
+
+    public UserRepository user() {
+        return user;
+    }
+
+    public void setUser(UserRepository user) {
+        this.user = user;
+    }
 }

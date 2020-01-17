@@ -1,4 +1,4 @@
-package se.iths.webbshop.controllers.utilities.Views;
+package se.iths.webbshop.views;
 
 import se.iths.webbshop.entities.User;
 

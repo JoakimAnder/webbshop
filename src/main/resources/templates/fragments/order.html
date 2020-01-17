@@ -115,8 +115,23 @@
         <div class="row">
             <!--            products-->
             <div th:each="line : ${order.lines}" class="card col-12 my-2 row">
-                <div class="col-10" th:with="product=${line.product}">
-                    <div th:replace="fragments/product :: basic" ></div>
+                <div class="col-10 row m-0" th:with="product=${line.product}" >
+                    <!--                        image-->
+                    <div class="col-4">
+                        <a th:href="@{/product/{id}(id=${product.id})}">
+                            <img th:src="${product.image}" th:alt="${product.title}" class="img img-fluid">
+                        </a>
+                    </div>
+                    <!--                        name, price, category-->
+                    <div class="col-5">
+                        <a th:href="@{/product/{id}(id=${product.id})}">
+                            <h3 th:text="${product.title}"></h3>
+                        </a>
+                        <h4 th:text="${line.price}"></h4>
+                    </div>
+                    <div class="col-3">
+                        <h5 th:text="${product.tags}"></h5>
+                    </div>
                 </div>
                 <div class="col-2">
                     <!--                    amount-->

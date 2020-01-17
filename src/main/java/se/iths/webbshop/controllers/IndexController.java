@@ -6,17 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import se.iths.webbshop.controllers.utilities.Login;
-import se.iths.webbshop.controllers.utilities.LoginRequest;
-import se.iths.webbshop.controllers.utilities.Search;
-import se.iths.webbshop.data.Dao;
+import se.iths.webbshop.utilities.Login;
+import se.iths.webbshop.utilities.LoginRequest;
+import se.iths.webbshop.utilities.Search;
 import se.iths.webbshop.entities.User;
 
 @Controller
 @RequestMapping("")
 public class IndexController {
-    @Autowired
-    Dao dao;
     @Autowired
     Login login;
 
@@ -39,9 +36,7 @@ public class IndexController {
     ModelAndView getHome(Model model) {
         if(!login.isLoggedIn())
             return new ModelAndView("redirect:/login");
-        model.addAttribute("isAdmin", login.isAdmin());
-
-        return new ModelAndView(forward("/home"), model.asMap());
+        return new ModelAndView(forward("/home"));
     }
 
     @PostMapping("/home")
@@ -71,7 +66,7 @@ public class IndexController {
 
     @PostMapping("/register")
     String register(User newUser) {
-        User user = dao.createUser(newUser);
+        User user = login.getService().create(newUser);
         return login(new LoginRequest(user.getUsername(), user.getPassword()));
     }
 
@@ -102,8 +97,8 @@ public class IndexController {
     // region forwards
 
     @GetMapping("/product/{id}")
-    String getProduct(@PathVariable Integer id) {
-        return forward("/product/"+id);
+    ModelAndView getProduct(@PathVariable Integer id) {
+        return new ModelAndView(forward("/product/"+id));
     }
     @GetMapping("/order/{id}")
     String getOrder(@PathVariable Integer id) {

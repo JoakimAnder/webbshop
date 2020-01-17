@@ -1,6 +1,6 @@
-package se.iths.webbshop.controllers.utilities.Views;
+package se.iths.webbshop.views;
 
-import se.iths.webbshop.controllers.utilities.Entry;
+import se.iths.webbshop.utilities.Entry;
 
 public class ViewEntry {
     int key;

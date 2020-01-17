@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import se.iths.webbshop.annotations.Credentials;
-import se.iths.webbshop.controllers.utilities.Login;
-import se.iths.webbshop.controllers.utilities.Search;
-import se.iths.webbshop.data.Dao;
+import se.iths.webbshop.utilities.Login;
+import se.iths.webbshop.utilities.Search;
 import se.iths.webbshop.entities.Order;
 import se.iths.webbshop.entities.Product;
 
@@ -21,8 +20,6 @@ import se.iths.webbshop.entities.Product;
 public class AdminController {
     @Autowired
     Login login;
-    @Autowired
-    Dao dao;
 
     @Credentials
     @GetMapping("/home")
@@ -33,10 +30,10 @@ public class AdminController {
 
         if(search.getCategory().equals("products")) {
             model.addAttribute("newProduct", new Product());
-            model.addAttribute("products", dao.getProducts(search.getTags(), search.getQuery()));
+            model.addAttribute("products", login.getService().getProducts(search.getTags(), search.getQuery()));
         }
         if(search.getCategory().equals("orders")) {
-            model.addAttribute("orders", dao.getOrders(search.getQuery()));
+            model.addAttribute("orders", login.getService().getOrders(search.getQuery()));
         }
 
         return "admin/"+search.getCategory();
@@ -45,7 +42,7 @@ public class AdminController {
     @Credentials
     @GetMapping("/product/{productId}")
     public String getProduct(@PathVariable Integer id, @PathVariable Integer productId, Model model) {
-        model.addAttribute("product", dao.getProduct(productId));
+        model.addAttribute("product", login.getService().getProduct(productId));
         model.addAttribute("isAdmin", login.isAdmin());
 
         return "admin/product";
@@ -54,7 +51,7 @@ public class AdminController {
     @Credentials
     @GetMapping("/order/{orderId}")
     public String getOrder(@PathVariable Integer id, @PathVariable Integer orderId, Model model) {
-        model.addAttribute("order", dao.getOrder(orderId));
+        model.addAttribute("order", login.getService().getOrder(orderId));
         model.addAttribute("isAdmin", login.isAdmin());
 
 
@@ -64,7 +61,7 @@ public class AdminController {
     @Credentials
     @PostMapping("/product")
     public String createProduct(@PathVariable Integer id, Product product) {
-        dao.createProduct(product);
+        login.getService().create(product);
 
         return "redirect:/home";
     }
@@ -72,7 +69,7 @@ public class AdminController {
     @Credentials
     @PostMapping("/order/{orderId}")
     public String changeOrder(@PathVariable Integer id, @PathVariable Integer orderId, Order order) {
-        dao.updateOrder(orderId, order);
+        login.getService().update(orderId, order);
 
         return "redirect:/order/"+orderId;
     }
@@ -80,7 +77,7 @@ public class AdminController {
     @Credentials
     @PostMapping("/product/{productId}")
     public String changeProduct(@PathVariable Integer id, @PathVariable Integer productId, Product newProduct) {
-        dao.updateProduct(productId, newProduct);
+        login.getService().update(productId, newProduct);
 
         return "redirect:/product/"+productId;
     }

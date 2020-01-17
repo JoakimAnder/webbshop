@@ -1,8 +1,7 @@
-package se.iths.webbshop.controllers.utilities.Views;
+package se.iths.webbshop.views;
 
 import se.iths.webbshop.entities.Product;
 
-import javax.persistence.ElementCollection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

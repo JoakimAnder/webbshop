@@ -1,9 +1,6 @@
-package se.iths.webbshop.controllers.utilities.Views;
+package se.iths.webbshop.views;
 
 import se.iths.webbshop.entities.Line;
-import se.iths.webbshop.entities.Product;
-
-import javax.persistence.OneToOne;
 
 public class ViewLine {
     public int id;

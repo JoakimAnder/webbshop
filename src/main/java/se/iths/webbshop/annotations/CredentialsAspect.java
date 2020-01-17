@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
-import se.iths.webbshop.controllers.utilities.Login;
+import se.iths.webbshop.utilities.Login;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

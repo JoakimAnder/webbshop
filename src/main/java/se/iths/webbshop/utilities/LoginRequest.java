@@ -1,4 +1,4 @@
-package se.iths.webbshop.controllers.utilities;
+package se.iths.webbshop.utilities;
 
 public class LoginRequest {
     String username = "";

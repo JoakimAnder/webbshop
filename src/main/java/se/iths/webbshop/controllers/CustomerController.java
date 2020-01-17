@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import se.iths.webbshop.annotations.Credentials;
-import se.iths.webbshop.controllers.utilities.Login;
-import se.iths.webbshop.controllers.utilities.Search;
-import se.iths.webbshop.controllers.utilities.Views.ViewEntry;
-import se.iths.webbshop.data.Dao;
-import se.iths.webbshop.controllers.utilities.Cart;
+import se.iths.webbshop.utilities.Login;
+import se.iths.webbshop.utilities.Search;
+import se.iths.webbshop.views.ViewEntry;
+import se.iths.webbshop.utilities.Cart;
 import se.iths.webbshop.entities.Order;
 import se.iths.webbshop.entities.Product;
 import se.iths.webbshop.entities.User;
@@ -25,8 +24,6 @@ public class CustomerController {
 
     @Autowired
     Login login;
-    @Autowired
-    Dao dao;
 
     @Credentials
     @GetMapping("/home")
@@ -34,7 +31,7 @@ public class CustomerController {
         Cart cart = login.getCart();
         Search search = login.getSearch();
 
-        model.addAttribute("products", dao.getProducts(search.getTags(), search.getQuery()));
+        model.addAttribute("products", login.getService().getProducts(search.getTags(), search.getQuery()));
         model.addAttribute("newEntry", new ViewEntry());
         model.addAttribute("isAdmin", login.isAdmin());
         model.addAttribute("search", search);
@@ -46,11 +43,10 @@ public class CustomerController {
     @Credentials
     @GetMapping("/product/{productId}")
     public String getProduct(@PathVariable Integer id, @PathVariable Integer productId, Model model) {
-        model.addAttribute("product", dao.getProduct(productId));
+        model.addAttribute("product", login.getService().getProduct(productId));
         model.addAttribute("entry", new ViewEntry());
         model.addAttribute("isAdmin", login.isAdmin());
         model.addAttribute("cart", login.getCart());
-
 
         return "customer/product";
     }
@@ -59,9 +55,8 @@ public class CustomerController {
     @GetMapping("/order/{orderId}")
     public String getOrder(@PathVariable Integer id, @PathVariable String orderId, Model model) {
         model.addAttribute("cart", login.getCart());
-        model.addAttribute("order", dao.getOrder(Integer.parseInt(orderId)));
+        model.addAttribute("order", login.getService().getOrder(Integer.parseInt(orderId)));
         model.addAttribute("isAdmin", login.isAdmin());
-
 
         return "customer/order";
     }
@@ -81,7 +76,7 @@ public class CustomerController {
     @PostMapping("/product")
     public String addProduct(@PathVariable Integer id, ViewEntry entry) {
         Cart cart = login.getCart();
-        Product product = dao.getProduct(entry.getKey());
+        Product product = login.getService().getProduct(entry.getKey());
 
         cart.put(product, 1+cart.findAmount(product));
         return "redirect:/home";
@@ -91,9 +86,7 @@ public class CustomerController {
     @PostMapping("/cart")
     public String changeCart(@PathVariable Integer id, ViewEntry newEntry) {
         Cart cart = login.getCart();
-        System.out.println(newEntry.getKey());
-        System.out.println(newEntry.getValue());
-        Product product = dao.getProduct(newEntry.getKey());
+        Product product = login.getService().getProduct(newEntry.getKey());
 
         cart.put(product, newEntry.getValue());
         return "redirect:/cart";
@@ -102,10 +95,10 @@ public class CustomerController {
     @Credentials
     @PostMapping("/order")
     public String createOrder(@PathVariable Integer id) {
-        User user = dao.getUser(id);
+        User user = login.getService().getUser(id);
         Cart cart = login.getCart();
 
-        Order order = dao.createOrder(new Order(0, user, cart.convertToOrderLines()));
+        Order order = login.getService().create(new Order(0, user, cart.convertToLines()));
         cart.clear();
 
         return "redirect:/order/"+order.getId();
@@ -115,7 +108,7 @@ public class CustomerController {
     @PostMapping("/product/{productId}")
     public String addProduct(@PathVariable Integer id, @PathVariable Integer productId, ViewEntry entry) {
         Cart cart = login.getCart();
-        Product product = dao.getProduct(productId);
+        Product product = login.getService().getProduct(productId);
 
         cart.put(product, entry.getValue());
         return "redirect:/product/"+productId;

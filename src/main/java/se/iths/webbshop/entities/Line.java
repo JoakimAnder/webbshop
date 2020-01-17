@@ -56,4 +56,19 @@ public class Line {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Line line = (Line) o;
+
+        return id == line.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }
