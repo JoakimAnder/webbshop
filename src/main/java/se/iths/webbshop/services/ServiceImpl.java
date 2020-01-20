@@ -11,6 +11,7 @@ import se.iths.webbshop.entities.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +20,18 @@ public class ServiceImpl implements Service {
     @Autowired
     Repository repo;
 
+    public ServiceImpl() {
+    }
+
+    public ServiceImpl(Repository repo) {
+        this.repo = repo;
+    }
+
+
     @Override
     public User login(String username, String password) {
+        if(username == null || password == null)
+            return null;
         User user = repo.user().findUserByUsername(username);
         if(user != null) {
             if(!user.getPassword().equals(password))
@@ -59,6 +70,7 @@ public class ServiceImpl implements Service {
 
     @Override
     public Entry convert(ViewEntry viewEntry) {
+        if(viewEntry == null) return null;
         Product key = repo.product().findById(viewEntry.getKey()).orElse(null);
         int value = viewEntry.getValue();
 
@@ -70,12 +82,14 @@ public class ServiceImpl implements Service {
     }
     @Override
     public Line convert(ViewLine viewLine) {
+        if(viewLine == null) return null;
         int id = viewLine.getId();
         Product product = repo.product().findById(viewLine.getProduct()).orElse(null);
         int amount = viewLine.getAmount();
         double price = viewLine.getPrice();
 
         Line line = new Line();
+        line.setId(id);
         line.setProduct(product);
         line.setAmount(amount);
         line.setPrice(price);
@@ -84,12 +98,14 @@ public class ServiceImpl implements Service {
     }
     @Override
     public Order convert(ViewOrder viewOrder) {
+        if(viewOrder == null) return null;
         int id = viewOrder.getId();
         String status = viewOrder.getStatus();
         List<Line> lines = viewOrder.getLines().stream().map(this::convert).collect(Collectors.toList());
         User user = repo.user().findById(viewOrder.getUser()).orElse(null);
 
         Order order = new Order();
+        order.setId(id);
         order.setStatus(status);
         order.setLines(lines);
         order.setUser(user);
@@ -98,6 +114,7 @@ public class ServiceImpl implements Service {
     }
     @Override
     public Product convert(ViewProduct viewProduct) {
+        if(viewProduct == null) return null;
         int id = viewProduct.getId();
         List<String> tags = viewProduct.getTags();
         double price = viewProduct.getPrice();
@@ -105,6 +122,7 @@ public class ServiceImpl implements Service {
         String image = viewProduct.getImage();
 
         Product product = new Product();
+        product.setId(id);
         product.setTags(tags);
         product.setPrice(price);
         product.setTitle(title);
@@ -114,6 +132,7 @@ public class ServiceImpl implements Service {
     }
     @Override
     public User convert(ViewUser viewUser) {
+        if(viewUser == null) return null;
         int id = viewUser.getId();
         String address = viewUser.getAddress();
         String password = viewUser.getPassword();
@@ -121,6 +140,7 @@ public class ServiceImpl implements Service {
         boolean admin = viewUser.isAdmin();
 
         User user = new User();
+        user.setId(id);
         user.setAddress(address);
         user.setPassword(password);
         user.setUsername(username);
@@ -147,10 +167,17 @@ public class ServiceImpl implements Service {
         if(query.trim().isEmpty())
             return repo.order().findAll();
 
-        Integer[] ids = getNumbers(query.split(","))
-                .toArray(new Integer[0]);
+        List<Integer> ids;
+        if(query.contains(","))
+            ids = getNumbers(query.split(","));
+        else {
+            String[] arr = new String[1];
+            arr[0] = query;
+            ids = getNumbers(arr);
+        }
 
-        return repo.order().findAllByIdIn(ids);
+        List<Order> orders = repo.order().findAll().stream().filter(o -> ids.contains(o.getId())).collect(Collectors.toList());
+        return orders == null ? Collections.emptyList() : orders;
     }
 
     @Override
@@ -289,6 +316,7 @@ public class ServiceImpl implements Service {
 
     @Override
     public User update(Integer id, User newUser) {
+        if(newUser == null) return null;
         User user = getUser(id);
         String address = newUser.getAddress();
         String username = newUser.getUsername();
@@ -308,6 +336,7 @@ public class ServiceImpl implements Service {
     }
     @Override
     public Order update(Integer id, Order newOrder) {
+        if(newOrder == null) return null;
         Order order = getOrder(id);
         String status = newOrder.getStatus();
         User user = newOrder.getUser();
@@ -336,6 +365,7 @@ public class ServiceImpl implements Service {
     }
     @Override
     public Line update(Integer id, Line newLine) {
+        if(newLine == null) return null;
         Line line = getLine(id);
         int amount = newLine.getAmount();
         double price = newLine.getPrice();
@@ -359,6 +389,7 @@ public class ServiceImpl implements Service {
     }
     @Override
     public Product update(Integer id, Product newProduct) {
+        if(newProduct == null) return null;
         Product product = getProduct(id);
         String image = newProduct.getImage();
         String title = newProduct.getTitle();

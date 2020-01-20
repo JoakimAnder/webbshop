@@ -4,7 +4,7 @@ import se.iths.webbshop.entities.Product;
 
 public class Entry {
     Product key;
-    Integer value;
+    int value;
 
     public Entry() {
     }
@@ -37,14 +37,14 @@ public class Entry {
 
         Entry entry = (Entry) o;
 
-        if (key != null ? !key.equals(entry.key) : entry.key != null) return false;
-        return value != null ? value.equals(entry.value) : entry.value == null;
+        if (value != entry.value) return false;
+        return key != null ? key.equals(entry.key) : entry.key == null;
     }
 
     @Override
     public int hashCode() {
         int result = key != null ? key.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + value;
         return result;
     }
 }

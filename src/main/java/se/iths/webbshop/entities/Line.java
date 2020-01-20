@@ -58,6 +58,16 @@ public class Line {
     }
 
     @Override
+    public String toString() {
+        return "Line{" +
+                "id=" + id +
+                ", product=" + product +
+                ", price=" + price +
+                ", amount=" + amount +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

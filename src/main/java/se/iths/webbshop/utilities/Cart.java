@@ -30,6 +30,8 @@ public class Cart {
     }
 
     public int findAmount(Product product) {
+        if(product == null)
+            return 0;
         Integer amount = get(product).getValue();
         return amount == null ? 0 : amount;
     }
@@ -42,6 +44,8 @@ public class Cart {
     }
 
     public void put(Product key, Integer value) {
+        if(key == null)
+            return;
         basket.remove(get(key));
         if(value > 0) {
             basket.add(new Entry(key, value));
